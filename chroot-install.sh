@@ -2,8 +2,8 @@
 
 # Timezone Setup and Lang Setup
 
-echo "Enter Timezone (ex. America/New_York)"
-read -r timezone
+echo -n "Enter Timezone (ex. America/New_York)"
+read zoneinfo
 
 echo
 
@@ -15,8 +15,8 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 install_pkgs() {
 	clear
-	echo "Enter Additional Packages: "
-	read -r pkgs
+	echo -n "Enter Additional Packages: "
+	read pkgs
 
 	pacman -S $pkgs --noconfirm
 }
@@ -29,10 +29,10 @@ systemctl enable dhcpcd
 systemctl enable sshd
 
 # User setup
-echo "Enter Username: "
-read -r uname
+echo -n "Enter Username: "
+read uname
 useradd -mG wheel $uname
-
+echo "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers
 echo
 
 #set user password
@@ -44,15 +44,14 @@ echo "Set Root password: "; passwd root
 echo
 
 # hostname setup
-echo "Set Hostname: "
-read -r hname
+echo -n "Set Hostname: "
+read hname
 echo $hname > /etc/hostname
-
 echo
 
 grub_install() {
-	echo "Enter the disk name (ex. /dev/sda): "
-	read -r drive_name
+	echo -n "Enter the disk name (ex. /dev/sda): "
+	read drive_name
 	pacman -Syy grub efibootmgr --noconfirm
 	grub-install $drive_name
 	grub-mkconfig -o /boot/grub/grub.cfg
@@ -67,8 +66,8 @@ systemd_boot_install() {
 # Choose your boot loader (Grub and Systemd boot are the only ones supported right now)
 
 echo -e "1 Grub Boot Loader\n2 Systemd-Boot Loader\n"
-echo "Choose Boot Loader: "
-read -r boot_loader
+echo -n "Choose Boot Loader: "
+read boot_loader
 
 case $boot_loader in
 	1) grub_install ;;

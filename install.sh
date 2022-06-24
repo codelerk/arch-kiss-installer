@@ -14,23 +14,28 @@ lsblk
 
 echo
 
-echo "Enter Disk (ex. /dev/sda): "
-read -r disk_drive
+echo -n "Enter Disk (ex. /dev/sda): "
+read disk_drive
 
 cfdisk $disk_drive
 
-echo "Enter Boot Partition (ex. /dev/sda1): "
-read -r boot_partition
+echo -n "Enter Boot Partition (ex. /dev/sda1): "
+read boot_partition
 
 echo
 
-echo "Enter Root Partition (ex. /dev/sda2): "
-read -r root_partition
+echo -n "Enter Root Partition (ex. /dev/sda2): "
+read root_partition
 
 echo 
 
-echo "Enter Swap Partition: "
-read -r swap_partition
+echo -n "Enter Swap Partition: (Leave this one empty, if no swap partition) "
+read swap_partition
+
+if [ "$swap_partition" != "" ]; then
+	mkswap $swap_partition
+	swapon $swap_partition
+fi
 
 echo
 
@@ -44,10 +49,4 @@ pacstrap /mnt base base-devel linux linux-firmware linux-headers dhcpcd networkm
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-wait -n arch-chroot /mnt /bin/bash <(curl -s https://raw.githubusercontent.com/codelerk/arch-kiss-installer/main/chroot-install.sh)
-
-wait
-
-umount -R /mnt
-
-reboot
+arch-chroot /mnt /bin/bash <(curl -s https://raw.githubusercontent.com/codelerk/arch-kiss-installer/main/chroot-install.sh)
