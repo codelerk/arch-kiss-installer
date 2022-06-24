@@ -7,13 +7,16 @@ echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
+# enable services
+systemctl enable NetworkManager
+systemctl enable dhcpcd
+
 # User setup
 echo "Enter Username: "
 read uname
 useradd -mG wheel -s /usr/bin/fish $uname
 echo "Set $uname password: "
 passwd $uname
-
 
 # root pass setup
 echo "Set Root password: "
@@ -29,7 +32,7 @@ pacman -S grub efibootmgr
 grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 
-echo "done installing....now exit and umount and you're ready to go"
+echo "done installing....now exit and umount -R /mnt"
 
 
 # Systemd-boot installer
