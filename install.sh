@@ -9,4 +9,4 @@ pacstrap /mnt base base-devel linux linux-firmware linux-headers dhcpcd networkm
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-arch-chroot /mnt bash <(curl -s url)
+arch-chroot /mnt /bin/bash <(curl -s https://raw.githubusercontent.com/codelerk/arch-install/main/chroot-install.sh)
