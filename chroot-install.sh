@@ -14,7 +14,7 @@ locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 enable_multilib() {
-	echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist"
+	echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 	pacman -Syyu --noconfirm
 }
 
@@ -62,7 +62,7 @@ install_yay() {
 	git clone https://aur.archlinux.org/yay.git
 	chown -R $uname:$uname yay
 	cd yay
-	su $uname -c "makepkg -si"
+	su $uname -c "makepkg -si" -S
 	cd ..
 	rm -r yay
 }
