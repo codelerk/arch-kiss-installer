@@ -29,7 +29,7 @@ read root_partition
 
 echo 
 
-echo -n "Enter Swap Partition: (Leave this one empty, if no swap partition) "
+echo -n "Enter Swap Partition: (Leave this one empty, if no swap partition): "
 read swap_partition
 
 if [ "$swap_partition" != "" ]; then

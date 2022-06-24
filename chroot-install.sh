@@ -14,7 +14,7 @@ locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 enable_multilib() {
-	sed -i "/multilib/s/^#//g" /etc/pacman.conf
+	sed -i "/[multilib]/s/^#//g" /etc/pacman.conf
 	sed -i '/^#\[multilib]/{N;s/\n#/\n/}' /etc/pacman.conf
 	pacman -Syyu --noconfirm
 }
@@ -37,6 +37,7 @@ systemctl enable dhcpcd
 systemctl enable sshd
 
 # User setup
+echo
 echo -n "Enter Username: "
 read uname
 useradd -mG wheel $uname
@@ -60,11 +61,11 @@ echo
 install_yay() {
 	# install yay by default
 	git clone https://aur.archlinux.org/yay.git
+	chown -R $uname:$uname yay
 	cd yay
-	makepkg -si
+	su $uname -c "makepkg -si"
 	cd ..
 	rm -r yay
-	yay -Syy
 }
 
 install_yay
