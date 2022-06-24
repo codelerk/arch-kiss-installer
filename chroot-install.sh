@@ -39,7 +39,7 @@ echo
 echo -n "Enter Username: "
 read uname
 useradd -mG wheel $uname
-echo -e "%wheel ALL=(ALL:ALL) NOPASSWD ALL" >> /etc/sudoers
+echo "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers
 echo
 
 #set user password
@@ -56,21 +56,13 @@ read hname
 echo $hname > /etc/hostname
 echo
 
-install_yay() {
+yay() {
 	# install yay by default
-	git clone https://aur.archlinux.org/yay.git
+	git clone https://aur.archlinux.org/yay.git /home/$uname/yay
 	chown -R $uname:$uname yay
-	cd yay
-	su $uname -c "sudo pacman -S go --noconfirm; makepkg -si"
-	cd ..
-	rm -r yay
 }
 
-install_yay
-
-# reset sudo access to password without a password
-sed -i '$ d' /etc/sudoers
-echo -e "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers
+yay
 
 grub_install() {
 	echo -n "Enter the disk name (ex. /dev/sda): "

@@ -20,7 +20,6 @@ read disk_drive
 
 cfdisk $disk_drive
 lsblk
-echo
 
 echo -n "Enter Boot Partition (ex. /dev/sda1): "
 read boot_partition
