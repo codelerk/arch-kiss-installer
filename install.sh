@@ -1,9 +1,13 @@
 #!/bin/bash
 
-timedatectl set-ntp true
+pacman -Sy figlet lolcat --noconfirm
 
-echo "Hi Welcome to the Arch Kiss Installer!!!"
+clear
+
+figlet "Kiss Installer" | lolcat
 echo
+
+timedatectl set-ntp true
 
 echo "First thing we are going to do is partition the select disk we are installing Arch Linux onto!!!"
 echo
@@ -15,8 +19,6 @@ echo -n "Enter Disk (ex. /dev/sda): "
 read disk_drive
 
 cfdisk $disk_drive
-echo
-
 lsblk
 echo
 
