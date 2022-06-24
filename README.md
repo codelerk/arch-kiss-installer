@@ -1,1 +1,1 @@
-bash <(curl -s https://raw.githubusercontent.com/codelerk/arch-install/main/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/codelerk/arch-kiss-installer/main/install.sh)
