@@ -2,6 +2,9 @@
 
 timedatectl set-ntp true
 
+mkfs.ext4 /dev/sda2
+mkfs.fat -F 32 /dev/sda1
+
 mount /dev/sda1 /mnt
 mount --mkdir /dev/sda2 /mnt/boot
 
