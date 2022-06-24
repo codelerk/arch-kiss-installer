@@ -44,7 +44,9 @@ pacstrap /mnt base base-devel linux linux-firmware linux-headers dhcpcd networkm
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-wait arch-chroot /mnt /bin/bash <(curl -s https://raw.githubusercontent.com/codelerk/arch-kiss-installer/main/chroot-install.sh)
+wait -n arch-chroot /mnt /bin/bash <(curl -s https://raw.githubusercontent.com/codelerk/arch-kiss-installer/main/chroot-install.sh)
+
+wait
 
 umount -R /mnt
 
