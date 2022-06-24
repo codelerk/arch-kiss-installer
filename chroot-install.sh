@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 
 # Timezone Setup and Lang Setup
 
@@ -15,7 +15,6 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 enable_multilib() {
 	echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
-	pacman -Syyu --noconfirm
 }
 
 enable_multilib
@@ -40,7 +39,7 @@ echo
 echo -n "Enter Username: "
 read uname
 useradd -mG wheel $uname
-echo "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers
+echo -e "%wheel ALL=(ALL:ALL) NOPASSWD ALL" >> /etc/sudoers
 echo
 
 #set user password
@@ -62,12 +61,16 @@ install_yay() {
 	git clone https://aur.archlinux.org/yay.git
 	chown -R $uname:$uname yay
 	cd yay
-	su $uname -c "makepkg -si" -S
+	su $uname -c "sudo pacman -S go --noconfirm; makepkg -si"
 	cd ..
 	rm -r yay
 }
 
 install_yay
+
+# reset sudo access to password without a password
+sed -i '$ d' /etc/sudoers
+echo -e "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
 grub_install() {
 	echo -n "Enter the disk name (ex. /dev/sda): "
@@ -76,6 +79,7 @@ grub_install() {
 	grub-install $drive_name
 	grub-mkconfig -o /boot/grub/grub.cfg
 }
+
 
 systemd_boot_install() {
 	bootctl install
