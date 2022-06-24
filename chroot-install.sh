@@ -2,7 +2,7 @@
 
 # Timezone Setup and Lang Setup
 
-echo -n "Enter Timezone (ex. America/New_York)"
+echo -n "Enter Timezone (ex. America/New_York): "
 read zoneinfo
 
 echo
@@ -13,12 +13,20 @@ echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
+enable_multilib() {
+	sed -i "/multilib/s/^#//g" /etc/pacman.conf
+	sed -i '/^#\[multilib]/{N;s/\n#/\n/}' /etc/pacman.conf
+	pacman -Syyu --noconfirm
+}
+
+enable_multilib
+
 install_pkgs() {
 	clear
 	echo -n "Enter Additional Packages: "
 	read pkgs
 
-	pacman -S $pkgs --noconfirm
+	pacman -Syy $pkgs --noconfirm
 }
 
 install_pkgs
@@ -49,6 +57,18 @@ read hname
 echo $hname > /etc/hostname
 echo
 
+install_yay() {
+	# install yay by default
+	git clone https://aur.archlinux.org/yay.git
+	cd yay
+	makepkg -si
+	cd ..
+	rm -r yay
+	yay -Syy
+}
+
+install_yay
+
 grub_install() {
 	echo -n "Enter the disk name (ex. /dev/sda): "
 	read drive_name
@@ -59,7 +79,7 @@ grub_install() {
 
 systemd_boot_install() {
 	bootctl install
-	echo -e "default arch.conf\ntimeout 10" > /boot/loader/loader.conf
+	echo -e "default arch.conf\ntimeout 5" > /boot/loader/loader.conf
 	echo -e "title Arch Linux\nlinux /vmlinuz-linux\ninitrd /initramfs-linux.img\noptions root=/dev/sda2 rw" > /boot/loader/entries/arch.conf
 }
 

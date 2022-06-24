@@ -45,7 +45,7 @@ mkfs.fat -F 32 $boot_partition
 mount $root_partition /mnt
 mount --mkdir $boot_partition /mnt/boot
 
-pacstrap /mnt base base-devel linux linux-firmware linux-headers dhcpcd networkmanager vim neofetch git openssh --noconfirm
+pacstrap /mnt base base-devel linux linux-firmware linux-headers dhcpcd networkmanager vim neofetch git openssh htop --noconfirm
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
