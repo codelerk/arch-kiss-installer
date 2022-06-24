@@ -14,8 +14,7 @@ locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 enable_multilib() {
-	sed -i "/[multilib]/s/^#//g" /etc/pacman.conf
-	sed -i '/^#\[multilib]/{N;s/\n#/\n/}' /etc/pacman.conf
+	echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist"
 	pacman -Syyu --noconfirm
 }
 
