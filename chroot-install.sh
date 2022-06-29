@@ -14,7 +14,7 @@ locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 enable_multilib() {
-	echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+	sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 }
 
 enable_multilib
@@ -72,15 +72,16 @@ grub_install() {
 	grub-mkconfig -o /boot/grub/grub.cfg
 }
 
-
 systemd_boot_install() {
+	echo -n "Enter Root Parition (ex. /dev/sda2): "
+	read root_drive
 	bootctl install
-	echo -e "default arch.conf\ntimeout 5" > /boot/loader/loader.conf
-	echo -e "title Arch Linux\nlinux /vmlinuz-linux\ninitrd /initramfs-linux.img\noptions root=/dev/sda2 rw" > /boot/loader/entries/arch.conf
+	echo -e "default arch.conf\ntimeout 3" > /boot/loader/loader.conf
+	echo -e "title Arch Linux\nlinux /vmlinuz-linux\ninitrd /initramfs-linux.img\noptions root=$root_drive rw" > /boot/loader/entries/arch.conf
 }
 
 # Choose your boot loader (Grub and Systemd boot are the only ones supported right now)
-
+echo
 echo -e "1 Grub Boot Loader\n2 Systemd-Boot Loader\n"
 echo -n "Choose Boot Loader: "
 read boot_loader

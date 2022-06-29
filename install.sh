@@ -50,3 +50,5 @@ pacstrap /mnt base base-devel linux linux-firmware linux-headers dhcpcd networkm
 genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt /bin/bash <(curl -s https://raw.githubusercontent.com/codelerk/arch-kiss-installer/main/chroot-install.sh)
+
+echo "You can chroot into the system again if you want to make any additonal final changes"
